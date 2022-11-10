@@ -1,6 +1,10 @@
 # some popular deployment apps
 # heroku
-# streamlit (simple)
+# streamlit (simple) we are using this one
+
+# --------------------------------------------
+# Imorting
+# --------------------------------------------
 
 # import some packages 
 import streamlit as st
@@ -12,11 +16,19 @@ from sklearn.model_selection import train_test_split
 # import the dataset
 df = pd.read_csv('/Users/Korrin/Library/Mobile Documents/com~apple~CloudDocs/Learning & Books/the_Developer_Academy/Repositories/Day_by_Days/Week 6 - Knn_DecisionTree_SVM/diabetes.csv')
 
+# --------------------------------------------
+# Creating the app details
+# --------------------------------------------
+
 # set headings for the app
 st.title('Diabetes Prediction App')
 st.sidebar.header('User Input Parameters')
 st.subheader('Data Information:') # will show the mean, median, max and min values of the dataset
 st.write(df.describe()) # will show the dataset inside the subheader 
+
+# --------------------------------------------
+# Splitting the data
+# --------------------------------------------
 
 # setting my dependent and independent variables
 # X = df.iloc[:, 0:8].values
@@ -25,6 +37,10 @@ y = df.iloc[:, -1].values
 
 # splitting the dataset into training and testing
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+#--------------------------------------------
+# Creating the user input 
+#--------------------------------------------
 
 # creating a function to get user input
 def user_report():
@@ -54,12 +70,19 @@ def user_report():
     report_data = pd.DataFrame(user_report_data, index=[0])
     return report_data
 
+# --------------------------------------------
+# Storing User input in the dataset
+# --------------------------------------------
+
 # Patient data
 user_data = user_report() # this is the variable that will store the user input
 st.header('Patient Data')
 st.write(user_data)
 
-# Model trianing
+# --------------------------------------------
+# Model trianing & testing
+# --------------------------------------------
+# this is the model that we will use to predict the outcome
 from sklearn.neighbors import KNeighborsClassifier
 knn = KNeighborsClassifier(n_neighbors=13)
 knn.fit(X_train, y_train)
@@ -69,13 +92,19 @@ user_result = knn.predict(user_data)
 y_pred = knn.predict(X_test)
 
 
+# --------------------------------------------
+# Creating the output for the user
+# --------------------------------------------
+
 # output
 st.header('Your diabetes report: ')
 output = ''
+# 0 = no diabetes, 1 = diabetes
 if user_result[0] == 0:
     output = 'You do not have diabetes'
 else:
     output = 'You have diabetes'
 st.title(output)
 st.subheader('Accuracy Score: ')
+# converting score to a percentage
 st.write(str(accuracy_score(y_test, y_pred)*100)+'%')
