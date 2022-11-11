@@ -2,19 +2,20 @@
 # Imorting
 # --------------------------------------------
 
-# import some packages 
-import streamlit as st
-import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler , StandardScaler
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import confusion_matrix , accuracy_score
-from sklearn.model_selection import train_test_split
+import pandas as pd
+import streamlit as st
+import streamlit_echarts as st_echarts
 from sklearn import metrics
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 # import the datasets
 train_data = pd.read_csv('new_train_data.csv')
 test_data = pd.read_csv('new_test_data.csv')
+combined_data = pd.read_csv('new_combined_data.csv')
 
 # --------------------------------------------
 # Creating the app details
@@ -24,6 +25,7 @@ test_data = pd.read_csv('new_test_data.csv')
 st.title('Titanic Survival Prediction App')
 
 # SIDEBAR
+st.sidebar.image('titanic.png', width=300)
 st.sidebar.header('Parameters:')
 st.sidebar.subheader('Please enter your details below to see if you would have survived the Titanic')
 
@@ -136,7 +138,7 @@ user_data = user_input()
 
 st.header('Your profile:')
 st.write(user_data)
-    
+
 # --------------------------------------------
 # Creating the model
 # --------------------------------------------
@@ -171,3 +173,37 @@ else:
     output = ' some thing has gone wrong. 😬 Oops.'
 
 st.subheader('I am ' + accuracy_perc + '  sure that you will have' + output)
+
+# CHARTS
+options = {
+    "xAxis": {
+        "type": "category",
+        "data": ["Male", "Female", "Family", "Alone", "First Class", "Second Class", "Third Class", "Southampton", "Queenstown", "Cherbourg"],
+        'splitNumber': 10,
+    },
+    "yAxis": {"type": "value"},
+    "series": [
+        {
+            "data": [
+                {"value": 13, "itemStyle": {"color": "#225273"}},# male survival percentage
+                {"value": 83, "itemStyle": {"color": "#225273"}},# female survival percentage
+                {"value": 51, "itemStyle": {"color": "#369d9e"}}, # family survival percentage
+                {"value": 29, "itemStyle": {"color": "#369d9e"}}, # alone survival percentage
+                {"value": 58, "itemStyle": {"color": "#55c595"}}, # First Class survival percentage
+                {"value": 42, "itemStyle": {"color": "#55c595"}}, # Second Class survival percentage
+                {"value": 27, "itemStyle": {"color": "#55c595"}}, # Third Class survival percentage
+                {"value": 33, "itemStyle": {"color": "#7ce496"}}, # Southampton survival percentage
+                {"value": 44, "itemStyle": {"color": "#7ce496"}}, # Queenstown survival percentage
+                {"value": 49, "itemStyle": {"color": "#7ce496"}}, # Cherbourg survival percentage
+
+            ],
+            "type": "bar",
+        }
+    ],
+}
+# this next line was originally just st_echarts(...) but the object was not callable adding st_echarts.st_echarts(...) fixed the issue
+st_echarts.st_echarts( 
+    options=options,
+    height="500px",
+    width="100%",
+)
