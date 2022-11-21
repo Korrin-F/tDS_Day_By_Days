@@ -1,3 +1,4 @@
 {
-    "svg.preview.background": "white"
+    "svg.preview.background": "white",
+    "python.defaultInterpreterPath": "/Library/Frameworks/Python.framework/Versions/3.10/bin/python3"
 }
