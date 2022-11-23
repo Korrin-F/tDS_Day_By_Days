@@ -43,9 +43,11 @@ with page1_tab1:
 with page1_tab2:
     # summary of the users input is in this tab
     st.header('Mushroom Data Summary')
+    # this container shows the results of the user input that is generated at the end of the code
     results_container = st.container()
-    data_container = st.container()
-    with data_container:
+    # this container is here so the user data us displayed under the results
+    data_summary_container = st.container()
+    with data_summary_container:
         data_summary_column1, data_summary_column2, data_summary_column3 = st.columns([1.25,1.5,1])
 
 
